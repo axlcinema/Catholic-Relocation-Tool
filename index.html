@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Relocate">
+<title>Catholic Family Relocation Assessment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1117;--card:#181b24;--gold:#c9a96e;--gd:rgba(201,169,110,0.2);--t:#e8e4dc;--td:rgba(232,228,220,0.55);--bd:rgba(201,169,110,0.12);--g:#6abf7b;--gb:#4a8c5c;--am:#d4a843;--r:#cf6b6b;--rb:#8b3a3a;--hf:'Playfair Display',Georgia,serif;--bf:'Source Sans 3','Segoe UI',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--t);font-family:var(--bf);min-height:100dvh;overflow-x:hidden}
+button{font-family:var(--bf);-webkit-appearance:none}
+.page{padding:24px 14px;max-width:900px;margin:0 auto}
+.page.pb{padding-bottom:90px}
+h2{font-family:var(--hf);color:var(--gold);font-size:22px;margin-bottom:4px}
+.sub{color:var(--td);font-size:13px}
+.card{background:var(--card);border-radius:10px;padding:12px 14px;border:1px solid var(--bd);margin-bottom:6px}
+.row{display:flex;align-items:center;gap:10px}
+.flex1{flex:1;min-width:0}
+.fname{font-weight:600;font-size:13px;margin-bottom:1px}
+.fdesc{color:var(--td);font-size:11px}
+.stars{display:flex;gap:2px;flex-shrink:0}
+.star{background:none;border:none;font-size:20px;padding:2px;cursor:pointer;color:rgba(255,255,255,0.1);line-height:1}
+.star.on{color:var(--gold)}
+.star.off{color:rgba(255,255,255,0.05)!important}
+.skip-btn{background:transparent;border:1px solid var(--bd);color:var(--td);font-size:9px;font-weight:700;padding:4px 8px;border-radius:4px;cursor:pointer;letter-spacing:0.5px;white-space:nowrap;margin-left:4px}
+.skip-btn.on{background:var(--rb);border-color:var(--r);color:#fff}
+.skipped .fname,.skipped .fdesc{opacity:0.35;text-decoration:line-through}
+.bar{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--bd);padding:10px 14px;display:flex;gap:8px;justify-content:center;z-index:100;padding-bottom:max(10px,env(safe-area-inset-bottom))}
+.btn{background:linear-gradient(135deg,var(--gold),#a8863a);color:var(--bg);border:none;padding:12px 36px;border-radius:8px;font-family:var(--hf);font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 4px 20px rgba(201,169,110,0.3)}
+.btn:active{transform:scale(0.97)}
+.btn-o{background:transparent;color:var(--gold);border:1px solid var(--gold);padding:10px 24px;border-radius:8px;font-weight:600;cursor:pointer;font-size:13px}
+.btn-o:active{background:var(--gd)}
+.btn-s{background:transparent;color:var(--td);border:1px solid var(--bd);padding:5px 12px;border-radius:18px;font-size:11px;font-weight:600;cursor:pointer}
+.btn-s.on{background:var(--gold);color:var(--bg);border-color:var(--gold)}
+.chips{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px}
+.tag{background:var(--gd);color:var(--gold);padding:5px 12px;border-radius:18px;font-size:11px;font-weight:600}
+.intro{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100dvh;padding:32px 20px;text-align:center}
+.intro h1{font-family:var(--hf);font-size:28px;font-weight:700;color:var(--gold);line-height:1.2;margin:12px 0}
+.intro p{color:var(--td);font-size:14px;line-height:1.6;max-width:420px;margin:0 auto 24px}
+.sect{margin-bottom:20px}
+.sect-title{font-family:var(--hf);color:var(--gold);font-size:15px;margin-bottom:8px}
+.sel-wrap{position:relative}
+.sel{background:var(--card);color:var(--t);border:1px solid var(--bd);border-radius:8px;padding:12px 40px 12px 14px;font-size:14px;font-family:var(--bf);width:100%;-webkit-appearance:none;appearance:none;cursor:pointer}
+.sel-arrow{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--gold);font-size:12px;pointer-events:none}
+.cc{background:var(--card);border-radius:12px;border:1px solid var(--bd);margin-bottom:6px;overflow:hidden;transition:border-color 0.2s}
+.cc.top{border-color:var(--gold);box-shadow:0 0 14px var(--gd)}
+.cc-main{padding:11px 12px;display:flex;align-items:center;gap:7px;cursor:pointer}
+.cc-rank{font-size:11px;font-weight:700;color:var(--td);min-width:26px;text-align:center}
+.cc-flag{font-size:22px}
+.cc-name{font-weight:700;font-size:14px;font-family:var(--hf)}
+.cc-reg{font-size:10px;color:var(--td)}
+.cc-sc{text-align:right}
+.cc-num{font-size:20px;font-weight:700;font-family:var(--hf)}
+.cc-max{font-size:9px;color:var(--td)}
+.cc-act{display:flex;align-items:center;gap:5px}
+.cc-cmp{background:transparent;color:var(--td);border:1px solid var(--bd);border-radius:5px;padding:3px 7px;font-size:10px;cursor:pointer;font-weight:600}
+.cc-cmp.on{background:var(--gold);color:var(--bg);border-color:var(--gold)}
+.arr{color:var(--td);font-size:11px;transition:transform 0.2s;padding:2px}
+.arr.open{transform:rotate(180deg)}
+.detail{padding:0 12px 14px;border-top:1px solid var(--bd)}
+.notes{color:var(--td);font-size:12px;line-height:1.6;margin:10px 0}
+.sgrid{display:grid;grid-template-columns:1fr;gap:3px}
+@media(min-width:480px){.sgrid{grid-template-columns:1fr 1fr}}
+.sbar-bg{height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;flex:1}
+.sbar-f{height:100%;border-radius:3px;transition:width 0.4s}
+.sbar-w{display:flex;align-items:center;gap:5px}
+.sbar-v{font-size:10px;font-weight:700;min-width:14px;text-align:right}
+.slbl{display:flex;justify-content:space-between;font-size:10px;color:var(--td);margin-bottom:2px}
+.cmp-panel{background:var(--card);border-radius:12px;padding:14px;margin-bottom:14px;border:1px solid var(--gold);overflow-x:auto;-webkit-overflow-scrolling:touch}
+.cmp-panel h3{font-family:var(--hf);color:var(--gold);font-size:15px;margin-bottom:10px}
+.ctbl{width:100%;border-collapse:collapse;font-size:11px;min-width:360px}
+.ctbl th,.ctbl td{padding:4px 5px;border-bottom:1px solid var(--bd)}
+.ctbl th{text-align:center;font-weight:700;font-size:11px}
+.ctbl th:first-child{text-align:left;font-weight:400;color:var(--td)}
+.ctbl td:first-child{color:var(--td);font-size:10px}
+.ctbl td{text-align:center}
+.best{font-weight:700;color:var(--g)}
+.low{color:var(--r)}
+.footer{text-align:center;margin-top:32px;padding:18px 0;border-top:1px solid var(--bd)}
+.footer p{color:var(--td);font-size:10px;line-height:1.6}
+.dta-badge{display:inline-block;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700;margin-top:2px}
+.dta-y{background:rgba(106,191,123,0.15);color:var(--g)}
+.dta-n{background:rgba(207,107,107,0.12);color:var(--r)}
+.climate-opt{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+@media(min-width:500px){.climate-opt{grid-template-columns:1fr 1fr 1fr}}
+.cl-btn{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:10px 8px;cursor:pointer;text-align:center;transition:all 0.2s;color:var(--t);position:relative}
+.cl-btn.on{border-color:var(--gold);background:var(--gd)}
+.cl-btn .ico{font-size:20px;margin-bottom:3px}
+.cl-btn .lbl{font-size:11px;font-weight:600}
+.cl-btn .ck{position:absolute;top:5px;right:7px;font-size:11px;color:var(--gold);display:none}
+.cl-btn.on .ck{display:block}
+.cl-hint{color:var(--td);font-size:11px;margin-top:6px;text-align:center;font-style:italic}
+.sc-btns{display:flex;gap:6px;flex-wrap:wrap}
+.sc-btn{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:10px 14px;cursor:pointer;text-align:center;flex:1;min-width:90px;transition:all 0.2s;color:var(--t)}
+.sc-btn.on{border-color:var(--gold);background:var(--gd)}
+.sc-btn .ico{font-size:18px;margin-bottom:3px}
+.sc-btn .lbl{font-size:11px;font-weight:600}
+.step-dots{display:flex;gap:8px;justify-content:center;margin-bottom:20px}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.15)}
+.dot.on{background:var(--gold)}
+.count-bar{background:var(--card);border-radius:8px;padding:7px 12px;margin-bottom:10px;font-size:11px;color:var(--td);display:flex;justify-content:space-between;align-items:center}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<script type="text/babel">
+const{useState,useMemo}=React;
+const F=[
+{id:"catholic",n:"Catholic Community & Mass",d:"Parish availability, devotion, culture"},
+{id:"homeschool",n:"Homeschooling Freedom",d:"Legal status, regulation level"},
+{id:"vaccineChoice",n:"Parental Vaccine Choice",d:"Mandatory vs recommended"},
+{id:"outdoors",n:"Mountains & Nature",d:"Hiking, skiing, national parks"},
+{id:"costOfLiving",n:"Cost of Living",d:"Housing, food, daily expenses"},
+{id:"taxation",n:"Low Taxation",d:"Income tax, capital gains, burden"},
+{id:"safety",n:"Safety & Low Crime",d:"Peace index, family-friendliness"},
+{id:"language",n:"English Accessibility",d:"English spoken or easy language"},
+{id:"infrastructure",n:"Infrastructure Quality",d:"Roads, internet, healthcare"},
+{id:"gunRights",n:"Gun Ownership Rights",d:"Civilian firearms, licensing"},
+{id:"waterQuality",n:"Water Quality",d:"Tap water, springs, aquifers"},
+{id:"travelAccess",n:"Travel Accessibility",d:"Passport, airport connectivity"},
+{id:"food",n:"Food Quality",d:"Fresh produce, farming, non-GMO"},
+{id:"residency",n:"Residency Pathway",d:"Ease of long-term residency"},
+{id:"propertyRights",n:"Property Ownership",d:"Can foreigners buy land?"},
+{id:"politicalTrend",n:"Political Trajectory",d:"Trending more or less free?"},
+{id:"tlm",n:"Traditional Latin Mass",d:"FSSP, ICKSP, diocesan TLM"},
+];
+const CL=[{id:"med",n:"Mediterranean",ico:"☀️"},{id:"four",n:"Four Seasons",ico:"🍂"},{id:"trop",n:"Tropical",ico:"🌴"},{id:"cool",n:"Cool & Green",ico:"🌧️"},{id:"alp",n:"Alpine",ico:"🏔️"},{id:"dry",n:"Dry & Arid",ico:"🏜️"}];
+const SC=[{id:"single",n:"Single",ico:"🧑",b:{costOfLiving:1,language:1,taxation:1,travelAccess:1}},{id:"couple",n:"Couple",ico:"👫",b:{safety:1,propertyRights:1,taxation:1,residency:1}},{id:"family",n:"Family w/ Kids",ico:"👨‍👩‍👧‍👦",b:{safety:2,homeschool:2,catholic:1,vaccineChoice:1,waterQuality:1,food:1}}];
+const HC=["USA","UK","Ireland","Canada","Australia","South Africa","Germany"];
+const DT={portugal:[1,1,1,1,1,1,1],spain:[1,1,1,1,1,1,1],france:[1,1,1,1,1,1,1],italy:[1,1,1,1,1,1,1],germany:[1,1,1,1,1,1,0],austria:[1,1,1,1,1,1,1],poland:[1,1,1,1,1,1,1],ireland:[1,1,0,1,1,1,1],malta:[1,1,1,1,1,1,1],hungary:[1,1,1,1,1,1,1],croatia:[1,1,1,1,1,1,1],czechia:[1,1,1,1,1,1,1],belgium:[1,1,1,1,1,1,1],netherlands:[1,1,1,1,1,1,1],luxembourg:[1,1,1,1,1,1,1],denmark:[1,1,1,1,1,1,1],sweden:[1,1,1,1,1,1,1],finland:[1,1,1,1,1,1,1],estonia:[1,1,1,1,1,0,1],latvia:[1,1,1,1,1,0,1],lithuania:[1,1,1,1,1,0,1],romania:[1,1,1,1,1,1,1],bulgaria:[1,1,1,1,1,1,1],greece:[1,1,1,1,1,1,1],cyprus:[1,1,1,1,1,1,1],slovakia:[1,1,1,1,1,1,1],slovenia:[1,1,1,1,1,0,1],andorra:[0,1,0,0,0,0,0],switzerland:[1,1,1,1,1,1,1],montenegro:[0,1,0,0,0,0,1],georgia:[1,1,1,1,0,0,1],turkey:[1,1,1,1,1,1,1],russia:[1,1,1,1,1,1,1],philippines:[1,1,0,1,1,0,1],thailand:[1,1,1,1,1,1,1],southkorea:[1,1,1,1,1,1,1],usa:[0,1,1,1,1,1,1],mexico:[1,1,1,1,1,1,1],argentina:[1,1,0,1,1,0,1],chile:[1,1,1,1,1,1,1],uruguay:[1,1,0,1,1,0,1],paraguay:[0,0,0,0,0,0,0],costarica:[0,1,0,1,0,0,1],ecuador:[1,1,0,1,0,0,1],panama:[0,1,0,1,0,0,0],colombia:[1,1,0,1,0,1,1],brazil:[1,1,0,1,0,1,1],peru:[1,1,0,1,0,0,1],guatemala:[0,0,0,0,0,0,0],domrep:[0,1,0,1,0,0,0],belize:[0,1,0,1,0,0,0],uae:[0,1,0,0,0,0,1],qatar:[0,1,0,0,0,0,1]};
+// s order: catholic,homeschool,vaccineChoice,outdoors,costOfLiving,taxation,safety,language,infrastructure,gunRights,waterQuality,travelAccess,food,residency,propertyRights,politicalTrend,tlm
+const C=[
+{id:"portugal",n:"Portugal",f:"🇵🇹",r:"EU",s:[7,5,7,7,6,5,9,7,8,2,7,9,8,8,9,5,5],cl:{med:10,four:4,trop:3,cool:5,alp:3,dry:5},nt:"D7/D8 visas. Homeschool legal (need uni degree). ~80% Catholic. NHR ended 2024. Safe, trending left. TLM limited."},
+{id:"spain",n:"Spain",f:"🇪🇸",r:"EU",s:[7,3,7,8,6,4,8,6,8,2,7,9,9,6,9,3,6],cl:{med:10,four:5,trop:3,cool:3,alp:6,dry:7},nt:"~72% Catholic. Great climate/food. Homeschool grey area. Sanchez hard left. Digital nomad visa. Good TLM (FSSP, ICKSP)."},
+{id:"france",n:"France",f:"🇫🇷",r:"EU",s:[6,2,2,8,4,3,7,4,9,3,8,9,10,5,8,3,8],cl:{med:7,four:7,trop:2,cool:6,alp:8,dry:3},nt:"Homeschool severely restricted 2022. 11 mandatory vaccines. Best food. High taxes. TLM stronghold (FSSP/ICKSP)."},
+{id:"italy",n:"Italy",f:"🇮🇹",r:"EU",s:[9,7,3,9,5,3,7,5,7,6,8,9,10,6,9,6,9],cl:{med:9,four:6,trop:2,cool:3,alp:8,dry:4},nt:"Heart of Catholicism. Homeschool constitutional. 11 mandatory vaccines (bypass via homeschool). Gun-friendly for Europe. \u20AC200k flat tax. Best TLM. Meloni conservative."},
+{id:"germany",n:"Germany",f:"🇩🇪",r:"EU",s:[4,1,5,7,5,3,8,6,9,3,8,9,7,5,8,4,5],cl:{med:3,four:8,trop:1,cool:6,alp:6,dry:2},nt:"Homeschooling ILLEGAL. Mixed Catholic/Protestant. Strong economy. High taxes. Some TLM."},
+{id:"austria",n:"Austria",f:"🇦🇹",r:"EU",s:[7,7,5,10,4,4,9,4,9,5,10,9,8,5,6,5,7],cl:{med:3,four:7,trop:1,cool:4,alp:10,dry:2},nt:"Alps, world-class skiing. Homeschool legal no quals. COVID vax mandate repealed. Best water. FP\u00D6 govt 2025."},
+{id:"poland",n:"Poland",f:"🇵🇱",r:"EU",s:[9,7,7,7,7,6,8,3,7,3,7,8,7,6,7,4,8],cl:{med:2,four:8,trop:1,cool:5,alp:5,dry:1},nt:"~86% Catholic, JPII birthplace. Strong homeschool. Vaccines recommended. Tusk liberal. Harsh winters. Strong TLM."},
+{id:"ireland",n:"Ireland",f:"🇮🇪",r:"EU",s:[6,8,8,6,3,5,8,10,8,2,8,9,7,4,8,3,6],cl:{med:2,four:4,trop:1,cool:9,alp:2,dry:1},nt:"Constitutional homeschool right. English. Secularizing fast. Housing crisis. Rainy. 3rd freest economy. Some TLM."},
+{id:"malta",n:"Malta",f:"🇲🇹",r:"EU",s:[9,3,6,3,5,6,8,9,7,2,4,8,7,6,7,5,5],cl:{med:9,four:2,trop:4,cool:2,alp:1,dry:6},nt:"~98% Catholic. English official. Tiny, no mountains. Homeschool regulated. TLM available."},
+{id:"hungary",n:"Hungary",f:"🇭🇺",r:"EU",s:[6,4,4,5,7,6,8,2,7,2,7,8,7,5,7,6,5],cl:{med:4,four:7,trop:1,cool:4,alp:3,dry:3},nt:"Orban pro-family. ~37% Catholic. Homeschool restricted. Mandatory vax. Hungarian hard. Low cost. Some TLM."},
+{id:"croatia",n:"Croatia",f:"🇭🇷",r:"EU",s:[8,2,5,8,6,5,9,4,7,3,8,8,7,5,6,5,3],cl:{med:8,four:5,trop:1,cool:3,alp:5,dry:3},nt:"~86% Catholic. Adriatic coast. EU/Schengen/Euro 2023. Homeschool illegal. Safe. Limited TLM."},
+{id:"czechia",n:"Czech Republic",f:"🇨🇿",r:"EU",s:[3,6,5,7,7,6,9,3,8,9,8,8,7,5,8,6,4],cl:{med:2,four:8,trop:1,cool:5,alp:5,dry:2},nt:"Best gun rights in Europe: constitutional (2021), shall-issue CC. Secular. Safe. Prague. Limited TLM."},
+{id:"belgium",n:"Belgium",f:"🇧🇪",r:"EU",s:[6,5,6,5,4,2,7,7,8,3,7,9,8,5,8,4,5],cl:{med:2,four:6,trop:1,cool:8,alp:2,dry:1},nt:"~58% Catholic. Homeschool legal. High taxes. EU/NATO hub. Great food. Some TLM."},
+{id:"netherlands",n:"Netherlands",f:"🇳🇱",r:"EU",s:[3,2,7,3,3,4,8,9,9,2,7,9,7,5,8,4,4],cl:{med:2,four:5,trop:1,cool:8,alp:1,dry:1},nt:"Homeschool prohibited. Secular/liberal. Flat. Expensive. English widespread. Limited TLM."},
+{id:"luxembourg",n:"Luxembourg",f:"🇱🇺",r:"EU",s:[5,4,7,5,2,6,9,7,9,3,7,8,7,5,8,5,3],cl:{med:2,four:6,trop:1,cool:7,alp:2,dry:1},nt:"~60% Catholic. Tiny, wealthy. Multilingual. Very safe. Some TLM."},
+{id:"denmark",n:"Denmark",f:"🇩🇰",r:"EU",s:[1,6,8,4,2,2,9,8,9,3,8,9,7,4,8,5,2],cl:{med:1,four:5,trop:1,cool:8,alp:1,dry:1},nt:"Secular. Homeschool legal. Vax voluntary. Expensive. Great infra. Limited TLM."},
+{id:"sweden",n:"Sweden",f:"🇸🇪",r:"EU",s:[1,2,7,7,2,2,7,8,9,3,8,9,6,4,7,3,2],cl:{med:1,four:6,trop:1,cool:7,alp:5,dry:1},nt:"Secular. Homeschool banned. Vax voluntary. Expensive. Dark winters. Limited TLM."},
+{id:"finland",n:"Finland",f:"🇫🇮",r:"EU",s:[1,6,7,7,3,3,9,7,9,5,9,8,6,4,8,5,1],cl:{med:1,four:6,trop:1,cool:6,alp:3,dry:1},nt:"Secular. Homeschool legal. Great infra. Dark winters. Safe. Gun-friendly for hunting. No TLM."},
+{id:"estonia",n:"Estonia",f:"🇪🇪",r:"EU",s:[1,5,7,5,6,6,8,5,8,4,7,7,5,6,8,6,1],cl:{med:1,four:6,trop:1,cool:6,alp:1,dry:1},nt:"Most secular. E-residency pioneer. Digital infra. Cold. Low cost EU. No TLM."},
+{id:"latvia",n:"Latvia",f:"🇱🇻",r:"EU",s:[3,5,5,5,7,6,7,4,7,4,7,7,5,5,7,5,2],cl:{med:1,four:6,trop:1,cool:6,alp:1,dry:1},nt:"~24% Catholic. Cheap EU. Cold. Riga charming. Limited TLM."},
+{id:"lithuania",n:"Lithuania",f:"🇱🇹",r:"EU",s:[6,5,5,5,7,6,7,3,7,3,7,7,5,5,7,5,3],cl:{med:1,four:6,trop:1,cool:6,alp:1,dry:1},nt:"~77% Catholic. Affordable. Cold. Hill of Crosses. Some TLM Vilnius."},
+{id:"romania",n:"Romania",f:"🇷🇴",r:"EU",s:[2,5,5,8,8,7,6,4,5,3,6,7,6,6,7,5,2],cl:{med:3,four:7,trop:1,cool:4,alp:6,dry:2},nt:"~81% Orthodox. Very cheap. Carpathians. Growing digital. ~5% Catholic. Limited TLM."},
+{id:"bulgaria",n:"Bulgaria",f:"🇧🇬",r:"EU",s:[1,4,6,7,9,7,6,3,5,3,6,7,6,6,7,4,1],cl:{med:5,four:6,trop:1,cool:4,alp:5,dry:3},nt:"Orthodox. Cheapest EU. 10% flat tax. Poor infra. No TLM."},
+{id:"greece",n:"Greece",f:"🇬🇷",r:"EU",s:[2,3,5,8,6,5,7,5,6,3,6,8,8,5,7,4,2],cl:{med:10,four:3,trop:3,cool:2,alp:4,dry:6},nt:"Orthodox. Beautiful islands/mountains. Digital nomad visa. Limited TLM."},
+{id:"cyprus",n:"Cyprus",f:"🇨🇾",r:"EU",s:[2,4,6,4,5,7,8,8,7,3,5,7,6,6,8,5,1],cl:{med:9,four:2,trop:4,cool:1,alp:1,dry:7},nt:"Orthodox. English widespread. Low corp tax. Warm. EU. No TLM."},
+{id:"slovakia",n:"Slovakia",f:"🇸🇰",r:"EU",s:[6,4,4,7,7,6,7,3,7,3,7,7,6,5,7,5,4],cl:{med:2,four:7,trop:1,cool:4,alp:6,dry:1},nt:"~62% Catholic. Tatras. Cheap. Mandatory vax. Fico govt mixed. Some TLM."},
+{id:"slovenia",n:"Slovenia",f:"🇸🇮",r:"EU",s:[5,4,5,9,5,5,9,4,8,4,9,7,7,4,7,5,3],cl:{med:4,four:6,trop:1,cool:5,alp:8,dry:1},nt:"~58% Catholic. Julian Alps. Small, safe. Lake Bled. Good water. Some TLM."},
+// Non-EU Europe
+{id:"andorra",n:"Andorra",f:"🇦🇩",r:"Europe",s:[7,4,7,9,5,9,10,4,7,2,8,5,6,4,7,6,2],cl:{med:3,four:5,trop:1,cool:3,alp:9,dry:2},nt:"Catholic bishop co-prince. 10% max tax. Ski resort. Hard residency. No airport. Very safe."},
+{id:"switzerland",n:"Switzerland",f:"🇨🇭",r:"Europe",s:[5,5,7,10,1,5,10,5,10,7,10,9,8,2,5,7,6],cl:{med:2,four:6,trop:1,cool:4,alp:10,dry:1},nt:"2nd freest economy. Direct democracy. Alps. High gun ownership. Extremely expensive. Hard residency. TLM Fribourg."},
+{id:"montenegro",n:"Montenegro",f:"🇲🇪",r:"Europe",s:[3,4,7,8,8,7,7,4,5,4,7,5,6,7,8,5,1],cl:{med:7,four:5,trop:1,cool:3,alp:6,dry:2},nt:"Orthodox. Adriatic + mountains. Very cheap. Easy residency. EU candidate. No TLM."},
+// Eurasia
+{id:"georgia",n:"Georgia",f:"🇬🇪",r:"Eurasia",s:[2,6,8,9,9,8,7,3,5,4,7,4,7,9,8,3,1],cl:{med:4,four:6,trop:2,cool:4,alp:7,dry:3},nt:"Very cheap. 1yr visa-free. 20% flat tax. Caucasus. Orthodox. Russian influence. No TLM."},
+{id:"turkey",n:"Turkey",f:"🇹🇷",r:"Eurasia",s:[1,3,7,8,7,6,5,3,7,3,6,7,8,6,7,3,1],cl:{med:7,four:6,trop:2,cool:3,alp:5,dry:5},nt:"~99% Muslim. Diverse geography. Cheap. Easy residency. Lira unstable. Erdogan authoritarian. No TLM."},
+{id:"russia",n:"Russia",f:"🇷🇺",r:"Eurasia",s:[1,4,7,9,7,7,3,2,5,5,6,4,6,3,5,2,2],cl:{med:2,four:7,trop:1,cool:5,alp:5,dry:3},nt:"Orthodox. Vast. Cheap outside Moscow. Sanctions. Authoritarian. Some TLM Moscow. Hard to recommend."},
+// Middle East
+{id:"uae",n:"UAE",f:"🇦🇪",r:"Middle East",s:[2,3,8,3,4,10,8,9,10,1,5,10,5,6,5,5,1],cl:{med:2,four:1,trop:4,cool:1,alp:1,dry:10},nt:"0% income tax. World-class infrastructure (Dubai, Abu Dhabi). English widely spoken. Catholic churches exist but restricted. Extremely hot. No gun rights. 10yr golden visa. No TLM. Expat-dominated."},
+{id:"qatar",n:"Qatar",f:"🇶🇦",r:"Middle East",s:[1,2,8,2,3,10,9,7,9,1,4,8,4,5,3,5,1],cl:{med:1,four:1,trop:3,cool:1,alp:1,dry:10},nt:"0% income tax. Very safe. World Cup infrastructure. English common in business. One Catholic church (Our Lady of the Rosary). Extremely hot/humid. Very restrictive socially. No TLM. Foreigners can't own freely."},
+// Asia
+{id:"philippines",n:"Philippines",f:"🇵🇭",r:"Asia",s:[9,8,7,7,9,5,4,9,4,5,3,3,6,6,3,5,4],cl:{med:2,four:1,trop:10,cool:1,alp:1,dry:2},nt:"~85% Catholic, devout. English. Very cheap. Can't own land. Typhoons. Some TLM Manila."},
+{id:"thailand",n:"Thailand",f:"🇹🇭",r:"Asia",s:[1,5,8,6,9,7,6,4,6,3,4,5,9,5,2,5,1],cl:{med:2,four:1,trop:10,cool:1,alp:2,dry:2},nt:"Buddhist. Very cheap. Great food. Can't own land. LTR visa. Hot. No TLM."},
+{id:"southkorea",n:"South Korea",f:"🇰🇷",r:"Asia",s:[4,4,6,7,5,5,8,4,9,2,6,8,7,4,5,5,3],cl:{med:3,four:8,trop:1,cool:4,alp:4,dry:2},nt:"~11% Catholic (growing). High-tech. Four seasons. Some TLM Seoul. Korean hard."},
+// Americas
+{id:"usa",n:"United States",f:"🇺🇸",r:"Americas",s:[7,10,9,10,5,5,5,10,9,10,8,8,7,10,10,6,8],cl:{med:6,four:8,trop:5,cool:5,alp:7,dry:7},nt:"Varies by state. Best homeschool/gun freedom. No federal mandatory vax. ~22% Catholic. Expensive healthcare. TLM widespread."},
+{id:"mexico",n:"Mexico",f:"🇲🇽",r:"Americas",s:[8,6,8,8,8,5,4,6,5,2,4,6,9,8,6,4,7],cl:{med:5,four:4,trop:7,cool:2,alp:5,dry:5},nt:"~83% Catholic. Guns constitutional but restricted. Safety varies. Great food. Easy residency. Good TLM (FSSP)."},
+{id:"argentina",n:"Argentina",f:"🇦🇷",r:"Americas",s:[7,6,7,9,8,4,5,5,5,4,6,6,9,7,8,8,7],cl:{med:5,four:7,trop:3,cool:4,alp:8,dry:5},nt:"Milei: Heritage biggest improver. Patagonia. Peso unstable. Strong TLM. ~66% Catholic."},
+{id:"chile",n:"Chile",f:"🇨🇱",r:"Americas",s:[6,5,6,10,6,6,6,5,7,3,7,7,7,6,8,5,4],cl:{med:7,four:6,trop:2,cool:4,alp:8,dry:8},nt:"Atacama to Patagonia. ~55% Catholic. Guns discouraged. Wine country. Some TLM Santiago."},
+{id:"uruguay",n:"Uruguay",f:"🇺🇾",r:"Americas",s:[5,5,7,4,6,5,7,5,6,7,6,6,8,7,9,6,2],cl:{med:5,four:5,trop:3,cool:4,alp:1,dry:2},nt:"Most armed LatAm, shall-issue. Secular. Easy property/residency. No mountains. Limited TLM."},
+{id:"paraguay",n:"Paraguay",f:"🇵🇾",r:"Americas",s:[8,7,8,4,9,9,5,4,4,6,6,4,6,9,9,8,3],cl:{med:2,four:3,trop:8,cool:1,alp:1,dry:3},nt:"~87% Catholic. Heritage biggest improver. 10% flat, no foreign income tax. Easiest residency. Very cheap."},
+{id:"costarica",n:"Costa Rica",f:"🇨🇷",r:"Americas",s:[6,6,7,8,6,6,6,5,6,6,7,6,7,7,8,5,2],cl:{med:3,four:2,trop:9,cool:3,alp:3,dry:2},nt:"State religion Catholic. Pura vida. Guns legal. No military. Pensionado visa. Limited TLM."},
+{id:"ecuador",n:"Ecuador",f:"🇪🇨",r:"Americas",s:[7,5,7,8,9,6,3,5,5,4,6,4,7,7,8,4,2],cl:{med:4,four:3,trop:8,cool:3,alp:6,dry:3},nt:"~74% Catholic. Uses USD. Very cheap. Andes/Amazon/coast. Civilian carry 2023. Murder rate 5x."},
+{id:"panama",n:"Panama",f:"🇵🇦",r:"Americas",s:[7,5,7,5,6,8,6,5,6,6,5,6,6,8,8,5,2],cl:{med:2,four:1,trop:9,cool:1,alp:2,dry:2},nt:"~70% Catholic. Territorial tax. Safest C. America. CC legal. Uses USD. Best retiree visa."},
+{id:"colombia",n:"Colombia",f:"🇨🇴",r:"Americas",s:[7,5,7,9,8,5,4,4,5,3,6,5,7,7,7,4,3],cl:{med:4,four:2,trop:8,cool:2,alp:6,dry:2},nt:"~73% Catholic. Biodiversity. Medellin 'eternal spring.' Cheap. Improving safety. Some TLM."},
+{id:"brazil",n:"Brazil",f:"🇧🇷",r:"Americas",s:[7,5,7,8,7,4,3,5,5,4,5,5,7,6,7,5,5],cl:{med:3,four:3,trop:9,cool:2,alp:2,dry:3},nt:"Largest Catholic pop. Guns age 25+. Diverse. High crime cities. Some TLM."},
+{id:"peru",n:"Peru",f:"🇵🇪",r:"Americas",s:[7,5,7,9,8,5,4,4,5,3,5,5,7,6,7,4,3],cl:{med:4,four:3,trop:7,cool:2,alp:8,dry:6},nt:"~74% Catholic. Andes. Cheap outside Lima. Lima food world-class. Limited TLM."},
+{id:"guatemala",n:"Guatemala",f:"🇬🇹",r:"Americas",s:[8,5,7,7,9,6,3,3,4,7,4,4,5,6,6,4,2],cl:{med:4,four:2,trop:8,cool:2,alp:3,dry:2},nt:"Constitutional gun right. ~45% Catholic. Very cheap. Safety concern. Lake Atitlan."},
+{id:"domrep",n:"Dominican Rep.",f:"🇩🇴",r:"Americas",s:[7,4,6,5,8,6,4,4,4,3,4,5,6,7,6,4,1],cl:{med:2,four:1,trop:10,cool:1,alp:1,dry:3},nt:"~48% Catholic. Cheap. $200k investor visa. Hurricane risk. No TLM."},
+{id:"belize",n:"Belize",f:"🇧🇿",r:"Americas",s:[5,5,7,6,7,7,4,9,4,5,4,4,5,7,7,5,1],cl:{med:2,four:1,trop:9,cool:1,alp:1,dry:2},nt:"English-speaking! ~40% Catholic. Caribbean/jungle. Cheap. Guns legal (9mm max). QRP residency."},
+];
+const REGS=["All","EU","Europe","Americas","Asia","Middle East","Eurasia"];
+
+function App(){
+const[step,setStep]=useState("intro");
+const[wt,setWt]=useState(()=>{const w={};F.forEach(f=>{w[f.id]=3});return w});
+const[skip,setSkip]=useState(()=>{const s={};F.forEach(f=>{s[f.id]=false});return s});
+const[cpSet,setCpSet]=useState(new Set(["med"]));
+const[scn,setScn]=useState(null);
+const[hi,setHi]=useState(0);
+const[rf,setRf]=useState("All");
+const[ex,setEx]=useState(null);
+const[cList,setCList]=useState([]);
+const[sCmp,setSCmp]=useState(false);
+
+const toggleClimate=(id)=>{setCpSet(prev=>{const n=new Set(prev);if(n.has(id)){if(n.size>1)n.delete(id)}else n.add(id);return n})};
+const applySc=(sid)=>{const s=SC.find(x=>x.id===sid);if(!s)return;setScn(sid);const nw={};F.forEach(f=>{nw[f.id]=3});Object.entries(s.b).forEach(([k,v])=>{if(nw[k]!==undefined)nw[k]=Math.min(5,nw[k]+v)});setWt(nw);setSkip(prev=>{const ns={...prev};F.forEach(f=>{ns[f.id]=false});return ns})};
+
+const ranked=useMemo(()=>{
+const cpArr=[...cpSet];
+return C.map(c=>{
+let tw=0,ws=0;
+F.forEach((f,i)=>{if(skip[f.id])return;const w=wt[f.id]||0;ws+=w*(c.s[i]||0);tw+=w});
+// Climate: average of selected prefs, weight=3
+if(cpArr.length>0){const avg=cpArr.reduce((a,k)=>a+(c.cl[k]||0),0)/cpArr.length;ws+=3*avg;tw+=3}
+return{...c,fs:tw>0?Math.round((ws/tw)*10)/10:0};
+}).filter(c=>rf==="All"||(rf==="EU"?c.r==="EU":c.r===rf))
+.sort((a,b)=>b.fs-a.fs);
+},[wt,skip,cpSet,rf]);
+
+const tCmp=(id)=>setCList(p=>p.includes(id)?p.filter(x=>x!==id):p.length<4?[...p,id]:p);
+const cmpd=C.filter(c=>cList.includes(c.id));
+const sco=(s)=>s>=7?"var(--g)":s>=5.5?"var(--gold)":"var(--r)";
+const bco=(s)=>s>=8?"var(--gb)":s>=6?"var(--gold)":s>=4?"var(--am)":"var(--rb)";
+const bte=(s)=>s>=8?"var(--g)":s>=6?"#dcc07a":s>=4?"var(--am)":"var(--r)";
+const cpArr=[...cpSet];
+const climLabel=cpArr.map(id=>CL.find(x=>x.id===id)).filter(Boolean).map(x=>x.ico+" "+x.n).join(" + ");
+
+if(step==="intro")return(
+<div className="intro">
+<div style={{fontSize:48}}>✝️</div>
+<h1>Catholic Family<br/>Relocation Assessment</h1>
+<p>A weighted decision tool for freedom-loving Catholic families seeking a permanent home. Choose your climate, rate priorities, then compare {C.length} countries.</p>
+<div className="chips" style={{justifyContent:"center",marginBottom:24}}>
+{[C.length+" Countries","17 Criteria","6 Climates","Family Mode","DTA Treaties","Compare"].map(t=><span key={t} className="tag">{t}</span>)}
+</div>
+<button className="btn" onClick={()=>setStep("setup")}>Begin Assessment</button>
+<p style={{color:"var(--td)",fontSize:11,marginTop:20}}>Data updated February 2026</p>
+</div>);
+
+if(step==="setup")return(
+<div className="page pb">
+<div className="step-dots">{[1,2,3].map(i=><div key={i} className={`dot ${i===1?"on":""}`}/>)}</div>
+<h2>Setup</h2><p className="sub" style={{marginBottom:20}}>Configure your situation before rating priorities.</p>
+<div className="sect"><div className="sect-title">👤 Your Situation</div>
+<div className="sc-btns">{SC.map(s=><button key={s.id} className={`sc-btn ${scn===s.id?"on":""}`} onClick={()=>applySc(s.id)}><div className="ico">{s.ico}</div><div className="lbl">{s.n}</div></button>)}</div>
+<p style={{color:"var(--td)",fontSize:11,marginTop:6}}>Pre-adjusts weights. Fine-tune next.</p></div>
+<div className="sect"><div className="sect-title">🌤️ Preferred Climate</div>
+<div className="climate-opt">{CL.map(c=><button key={c.id} className={`cl-btn ${cpSet.has(c.id)?"on":""}`} onClick={()=>toggleClimate(c.id)}><span className="ck">✓</span><div className="ico">{c.ico}</div><div className="lbl">{c.n}</div></button>)}</div>
+<p className="cl-hint">Select one or more. Countries matching multiple picks score higher.</p></div>
+<div className="sect"><div className="sect-title">🏦 Home Country (for Double Taxation Treaty)</div>
+<div className="sel-wrap"><select className="sel" value={hi} onChange={e=>setHi(Number(e.target.value))}>{HC.map((h,i)=><option key={h} value={i}>{h}</option>)}</select><span className="sel-arrow">▼</span></div>
+<p style={{color:"var(--td)",fontSize:11,marginTop:6}}>Shows which countries have an active DTA with your home country.</p></div>
+<div className="bar"><button className="btn-o" onClick={()=>setStep("intro")}>Back</button><button className="btn" onClick={()=>setStep("weight")}>Rate Priorities →</button></div>
+</div>);
+
+if(step==="weight")return(
+<div className="page pb">
+<div className="step-dots">{[1,2,3].map(i=><div key={i} className={`dot ${i===2?"on":""}`}/>)}</div>
+<h2>Rate Your Priorities</h2><p className="sub" style={{marginBottom:16}}>1★ = nice to have · 5★ = non-negotiable · SKIP = exclude from scoring</p>
+{F.map(f=><div key={f.id} className={`card row ${skip[f.id]?"skipped":""}`}><div className="flex1"><div className="fname">{f.n}</div><div className="fdesc">{f.d}</div></div><div className="stars">{[1,2,3,4,5].map(s=><button key={s} className={`star ${!skip[f.id]&&s<=wt[f.id]?"on":""} ${skip[f.id]?"off":""}`} onClick={()=>{if(!skip[f.id])setWt(p=>({...p,[f.id]:s}))}}>★</button>)}</div><button className={`skip-btn ${skip[f.id]?"on":""}`} onClick={()=>setSkip(p=>({...p,[f.id]:!p[f.id]}))}>{skip[f.id]?"SKIPPED":"SKIP"}</button></div>)}
+<div className="bar"><button className="btn-o" onClick={()=>setStep("setup")}>Back</button><button className="btn" onClick={()=>setStep("results")}>See Results →</button></div>
+</div>);
+
+// RESULTS
+const totalC=C.length;
+const shownC=ranked.length;
+return(
+<div className="page" style={{paddingBottom:40}}>
+<div className="step-dots">{[1,2,3].map(i=><div key={i} className={`dot ${i===3?"on":""}`}/>)}</div>
+<div style={{display:"flex",justifyContent:"space-between",alignItems:"start",marginBottom:12,flexWrap:"wrap",gap:8}}>
+<div><h2>Your Rankings</h2><p className="sub">Tap for details.</p></div>
+<div style={{display:"flex",gap:6}}><button className="btn-o" style={{padding:"6px 12px",fontSize:12}} onClick={()=>setStep("weight")}>✏️ Edit</button><button className="btn-o" style={{padding:"6px 12px",fontSize:12}} onClick={()=>setStep("setup")}>⚙️ Setup</button></div>
+</div>
+<div className="chips">
+{REGS.map(r=><button key={r} className={`btn-s ${rf===r?"on":""}`} onClick={()=>setRf(r)}>{r}</button>)}
+{cList.length>=2&&<button className="btn-s on" onClick={()=>setSCmp(!sCmp)}>{sCmp?"Hide":"Compare"} ({cList.length})</button>}
+</div>
+<div className="count-bar">
+<span>Showing <strong style={{color:"var(--gold)"}}>{shownC}</strong> of {totalC} countries</span>
+<span style={{fontSize:10}}>{climLabel} · DTA: {HC[hi]} · {SC.find(x=>x.id===scn)?.ico||"👤"} {SC.find(x=>x.id===scn)?.n||"Custom"}</span>
+</div>
+
+{sCmp&&cmpd.length>=2&&(
+<div className="cmp-panel"><h3>Side-by-Side</h3>
+<table className="ctbl"><thead><tr><th>Factor</th>{cmpd.map(c=><th key={c.id}>{c.f} {c.n}</th>)}</tr></thead><tbody>
+{F.filter(f=>!skip[f.id]&&wt[f.id]>=3).map(f=>{const fi=F.indexOf(f);const vs=cmpd.map(c=>c.s[fi]||0);const b=Math.max(...vs);
+return<tr key={f.id}><td>{f.n}</td>{cmpd.map((c,i)=>{const v=vs[i];return<td key={c.id} className={v===b?"best":v>=6?"":"low"}>{v}/10</td>})}</tr>})}
+<tr><td>Climate</td>{cmpd.map(c=>{const avg=cpArr.length>0?Math.round(cpArr.reduce((a,k)=>a+(c.cl[k]||0),0)/cpArr.length*10)/10:0;const best=Math.max(...cmpd.map(x=>cpArr.length>0?Math.round(cpArr.reduce((a,k)=>a+(x.cl[k]||0),0)/cpArr.length*10)/10:0));return<td key={c.id} className={avg===best?"best":avg>=6?"":"low"}>{avg}/10</td>})}</tr>
+<tr><td>DTA {HC[hi]}</td>{cmpd.map(c=>{const d=DT[c.id];const h=d?d[hi]:false;return<td key={c.id}><span className={`dta-badge ${h?"dta-y":"dta-n"}`}>{h?"✓":"✗"}</span></td>})}</tr>
+</tbody></table></div>)}
+
+{ranked.map((c,i)=>{
+const op=ex===c.id;const rr=i+1;
+const md=rr===1?"🥇":rr===2?"🥈":rr===3?"🥉":null;
+const dt=DT[c.id];const hd=dt?dt[hi]:false;
+const climAvg=cpArr.length>0?Math.round(cpArr.reduce((a,k)=>a+(c.cl[k]||0),0)/cpArr.length*10)/10:0;
+return(
+<div key={c.id} className={`cc ${rr<=3?"top":""}`}>
+<div className="cc-main" onClick={()=>setEx(op?null:c.id)}>
+<div className="cc-rank">{md||`#${rr}`}</div>
+<div className="cc-flag">{c.f}</div>
+<div className="flex1"><div className="cc-name">{c.n}</div><div className="cc-reg">{c.r}{hd?<span className="dta-badge dta-y" style={{marginLeft:5}}>DTA</span>:null}</div></div>
+<div className="cc-sc"><div className="cc-num" style={{color:sco(c.fs)}}>{c.fs}</div><div className="cc-max">/ 10</div></div>
+<div className="cc-act"><button className={`cc-cmp ${cList.includes(c.id)?"on":""}`} onClick={e=>{e.stopPropagation();tCmp(c.id)}}>{cList.includes(c.id)?"✓":"+"}</button><span className={`arr ${op?"open":""}`}>▼</span></div>
+</div>
+{op&&(<div className="detail">
+<p className="notes">{c.nt}</p>
+<div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:10}}>
+<span className={`dta-badge ${hd?"dta-y":"dta-n"}`}>DTA w/ {HC[hi]}: {hd?"Yes":"No"}</span>
+<span className="dta-badge" style={{background:"var(--gd)",color:"var(--gold)"}}>Climate avg: {climAvg}/10</span>
+</div>
+<div style={{marginBottom:8}}><div style={{fontSize:10,color:"var(--td)",marginBottom:4,fontWeight:600}}>Climate Profile</div>
+<div style={{display:"flex",gap:4,flexWrap:"wrap"}}>{CL.map(cl2=><span key={cl2.id} style={{padding:"2px 7px",borderRadius:10,fontSize:9,fontWeight:600,background:cpSet.has(cl2.id)?"var(--gd)":"rgba(255,255,255,0.04)",color:cpSet.has(cl2.id)?"var(--gold)":"var(--td)",border:cpSet.has(cl2.id)?"1px solid var(--gold)":"1px solid transparent"}}>{cl2.ico} {c.cl[cl2.id]}/10</span>)}</div></div>
+<div className="sgrid">{F.map((f,fi)=>{if(skip[f.id])return null;return<div key={f.id} style={{padding:"3px 0"}}><div className="slbl"><span>{f.n}</span><span>{"★".repeat(wt[f.id])}</span></div><div className="sbar-w"><div className="sbar-bg"><div className="sbar-f" style={{width:`${(c.s[fi]||0)*10}%`,background:bco(c.s[fi]||0)}}/></div><span className="sbar-v" style={{color:bte(c.s[fi]||0)}}>{c.s[fi]||0}</span></div></div>})}</div>
+</div>)}
+</div>)})}
+
+<div className="footer">
+<p>Heritage Economic Freedom Index 2025 · Fraser Human Freedom Index 2025 · Global Peace Index · HSLDA · Small Arms Survey · Numbeo · IRS/HMRC/Revenue DTA lists</p>
+<button className="btn-o" style={{marginTop:10}} onClick={()=>{setStep("intro");setEx(null);setCList([]);setSCmp(false)}}>Start Over</button>
+</div>
+</div>);
+}
+ReactDOM.createRoot(document.getElementById("app")).render(<App/>);
+</script>
+</body>
+</html>

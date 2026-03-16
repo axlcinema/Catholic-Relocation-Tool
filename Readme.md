@@ -81,7 +81,7 @@ Tap the "+" button on up to 4 countries, then hit "Compare" to see a factor-by-f
 
 ### Option 1: Open directly
 
-Download `catholic-relocation-tool.html` and open it in any browser. That's it. No server, no dependencies, no build step.
+Open https://axlcinema.github.io/Catholic-Relocation-Tool/ or download `catholic-relocation-tool.html` and open it in any browser. That's it. No server, no dependencies, no build step.
 
 ### Option 2: Host it
 

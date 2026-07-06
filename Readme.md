@@ -2,27 +2,29 @@
 
 A weighted, interactive decision tool for freedom-loving Catholic families (or individuals) evaluating countries for permanent relocation. Built as a single standalone HTML file that runs in any browser, optimized for iPhone.
 
-![Data](https://img.shields.io/badge/Countries-54-c9a96e)
+![Data](https://img.shields.io/badge/Countries-59-c9a96e)
 ![Criteria](https://img.shields.io/badge/Criteria-17-c9a96e)
 ![Climates](https://img.shields.io/badge/Climate_Types-6-c9a96e)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
 ## What It Does
 
-You rate what matters to you on a 1-5 star scale within a fixed 51-star budget (or skip factors entirely, or mark them as MUST-have dealbreakers), pick your preferred climate(s), select your family situation and citizenship, and the tool ranks 54 countries against your personal priorities using a weighted scoring algorithm.
+You rate what matters to you on a 1-5 star scale within a fixed 51-star budget (or skip factors entirely, or mark them as MUST-have dealbreakers), pick your preferred climate(s), select your family situation and citizenship, and the tool ranks 59 countries against your personal priorities using a weighted scoring algorithm.
 
 Every family has different non-negotiables. This tool respects that instead of giving you a generic "top 10 countries" listicle — and countries that fail a non-negotiable are flagged as failing rather than quietly compensated by strong scores elsewhere.
 
 ## Features
 
-### 🌍 54 Countries Across 7 Regions
+### 🌍 59 Countries Across 9 Regions
 
 - **EU (27):** All member states from Portugal to Cyprus
 - **Non-EU Europe (4):** Andorra, Switzerland, Montenegro, United Kingdom
 - **Eurasia (3):** Georgia, Turkey, Russia
 - **Middle East (2):** UAE, Qatar
 - **Asia (3):** Philippines, Thailand, South Korea
-- **Americas (15):** USA, Mexico, Argentina, Chile, Uruguay, Paraguay, Costa Rica, Ecuador, Panama, Colombia, Brazil, Peru, Guatemala, Dominican Republic, Belize
+- **Oceania (2):** Australia, New Zealand
+- **Africa (1):** South Africa
+- **Americas (17):** USA, Canada, Mexico, El Salvador, Argentina, Chile, Uruguay, Paraguay, Costa Rica, Ecuador, Panama, Colombia, Brazil, Peru, Guatemala, Dominican Republic, Belize
 
 ### 📊 17 Weighted Criteria
 
@@ -161,7 +163,7 @@ All country scores are based on data from:
 - IRS, HMRC, Revenue.ie (double taxation treaty lists)
 - Latin Mass Directory, Una Voce (TLM availability)
 
-Data compiled: **February 2026** · Targeted corrections (vaccine mandates and homeschool regulations for Italy, Portugal, Germany, Poland, Czechia, Bulgaria, Greece, Switzerland, Malta; USA residency perspective; UK added incl. Children's Wellbeing and Schools Act 2026): **July 2026**
+Data compiled: **February 2026** · Targeted corrections (vaccine mandates and homeschool regulations for Italy, Portugal, Germany, Poland, Czechia, Bulgaria, Greece, Switzerland, Malta; USA residency perspective) and five new countries — Canada, Australia (No Jab No Pay/Play), New Zealand, South Africa (BELA Act), El Salvador — researched against current law: **July 2026**
 
 ⚠️ **De-jure legality can be undone by de-facto administrative rules.** A country where homeschooling is "legal" and vaccines are "not mandatory" may still require school registration that enforces the vaccine schedule. The warning banners cover known cases, but always verify the interaction of rules — not just each rule in isolation — before committing.
 

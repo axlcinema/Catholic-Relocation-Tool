@@ -2,27 +2,27 @@
 
 A weighted, interactive decision tool for freedom-loving Catholic families (or individuals) evaluating countries for permanent relocation. Built as a single standalone HTML file that runs in any browser, optimized for iPhone.
 
-![Data](https://img.shields.io/badge/Countries-48-c9a96e)
+![Data](https://img.shields.io/badge/Countries-54-c9a96e)
 ![Criteria](https://img.shields.io/badge/Criteria-17-c9a96e)
 ![Climates](https://img.shields.io/badge/Climate_Types-6-c9a96e)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
 ## What It Does
 
-You rate what matters to you on a 1-5 star scale (or skip factors entirely), pick your preferred climate(s), select your family situation, and the tool ranks 48 countries against your personal priorities using a weighted scoring algorithm.
+You rate what matters to you on a 1-5 star scale (or skip factors entirely, or mark them as MUST-have dealbreakers), pick your preferred climate(s), select your family situation and citizenship, and the tool ranks 54 countries against your personal priorities using a weighted scoring algorithm.
 
-Every family has different non-negotiables. This tool respects that instead of giving you a generic "top 10 countries" listicle.
+Every family has different non-negotiables. This tool respects that instead of giving you a generic "top 10 countries" listicle — and countries that fail a non-negotiable are flagged as failing rather than quietly compensated by strong scores elsewhere.
 
 ## Features
 
-### 🌍 48 Countries Across 7 Regions
+### 🌍 54 Countries Across 7 Regions
 
 - **EU (27):** All member states from Portugal to Cyprus
-- **Non-EU Europe (3):** Andorra, Switzerland, Montenegro
+- **Non-EU Europe (4):** Andorra, Switzerland, Montenegro, United Kingdom
 - **Eurasia (3):** Georgia, Turkey, Russia
 - **Middle East (2):** UAE, Qatar
 - **Asia (3):** Philippines, Thailand, South Korea
-- **Americas (13):** USA, Mexico, Argentina, Chile, Uruguay, Paraguay, Costa Rica, Ecuador, Panama, Colombia, Brazil, Peru, Guatemala, Dominican Republic, Belize
+- **Americas (15):** USA, Mexico, Argentina, Chile, Uruguay, Paraguay, Costa Rica, Ecuador, Panama, Colombia, Brazil, Peru, Guatemala, Dominican Republic, Belize
 
 ### 📊 17 Weighted Criteria
 
@@ -30,9 +30,23 @@ Each country is scored 1-10 on:
 
 Catholic Community & Mass, Homeschooling Freedom, Parental Vaccine Choice, Mountains & Nature, Cost of Living, Low Taxation, Safety & Low Crime, English Accessibility, Infrastructure Quality, Gun Ownership Rights, Water Quality, Travel Accessibility, Food Quality, Residency Pathway, Property Ownership, Political Trajectory, Traditional Latin Mass Access
 
+### 🚫 MUST (Dealbreaker) Mode
+
+Every factor has a **MUST** button next to SKIP. Mark a factor as MUST and any country scoring **under 5/10** on it is flagged as failing: greyed out, sorted below all passing countries, and labelled with exactly which dealbreakers it fails and by how much (e.g. *"Fails: Parental Vaccine Choice (2/10)"*). Countries scoring **5–6/10** on a MUST pass, but carry an amber *"Borderline — verify closely"* flag so a threshold-skimming score can never look like a clean pass.
+
+This exists because weighted averages hide dealbreakers — a country can score terribly on your one non-negotiable and still rank #1 on the strength of everything else. MUST mode makes that impossible.
+
+### ⚠️ Interaction Warnings
+
+Criteria interact in ways independent scores can't express. The classic trap: a country where homeschooling is legal *and* vaccines are "not mandatory for school" — but the vaccine mandate applies to all children regardless of schooling (Italy), or homeschooling is illegal so school vaccine rules bind everyone (Germany). Countries with known traps carry a ⚠️ marker in the rankings and a prominent amber warning banner when expanded.
+
+### 🛂 Citizenship-Aware Residency
+
+Select your citizenship and Residency Pathway scores adjust to your passport: EU citizens get free movement across all 27 EU states (and easier Swiss access), UK citizens get the Common Travel Area right to live in Ireland, US citizens get the USA. A badge shows when a score was adjusted for your passport.
+
 ### 🌤️ Multi-Select Climate Preference
 
-Six climate profiles, select one or more:
+Six climate profiles, select one or more (or none, to ignore climate entirely):
 
 - ☀️ Mediterranean
 - 🍂 Four Seasons
@@ -41,7 +55,11 @@ Six climate profiles, select one or more:
 - 🏔️ Alpine
 - 🏜️ Dry & Arid
 
-Countries are scored against each climate type independently (1-10), so a country like Italy that offers both Mediterranean coastline and Alpine mountains gets properly rewarded when you select both.
+Countries are scored against each climate type independently (1-10), so a country like Italy that offers both Mediterranean coastline and Alpine mountains gets properly rewarded when you select both. A star rating controls how much climate matters relative to your other priorities.
+
+### 💾 Persistence
+
+Your ratings, dealbreakers, climate picks, scenario, and citizenship are saved in the browser (localStorage) and survive closing the app. "Start Over" wipes them.
 
 ### 👤 Family Scenario Mode
 
@@ -59,7 +77,7 @@ Each priority factor has a "SKIP" button. Tap it to completely remove that facto
 
 ### 🏦 Double Taxation Treaty (DTA) Checker
 
-Select your home country from the dropdown and instantly see which destination countries have active double taxation treaties with it. Supported home countries:
+The citizenship dropdown doubles as the DTA selector — see which destination countries have active double taxation treaties with your home country. Supported home countries:
 
 USA, UK, Ireland, Canada, Australia, South Africa, Germany
 
@@ -74,14 +92,14 @@ Tap the "+" button on up to 4 countries, then hit "Compare" to see a factor-by-f
 - iPhone-optimized touch targets and viewport
 - Safe area insets for notch/dynamic island
 - Add to Home Screen support (standalone web app)
-- No scrolling issues, no pinch-zoom jank
-- Works offline once loaded (no server required)
+- Pinch-zoom enabled (accessibility)
+- No server or build step — note that React and fonts load from CDNs, so the first load (and reloads with a cleared cache) need an internet connection
 
 ## How to Use
 
 ### Option 1: Open directly
 
-Open https://axlcinema.github.io/Catholic-Relocation-Tool/ or download `catholic-relocation-tool.html` and open it in any browser. That's it. No server, no dependencies, no build step.
+Download `index.html` and open it in any browser. That's it. No server, no dependencies, no build step.
 
 ### Option 2: Host it
 
@@ -98,21 +116,28 @@ Upload the single HTML file to any web host, S3 bucket, GitHub Pages, or Netlify
 
 ```
 For each country:
+  scores = country_factor_scores
+  if citizenship grants an easier residency pathway (EU free movement,
+     UK↔Ireland CTA, home country): scores.residency = max(base, override)
+
   weighted_sum = 0
   total_weight = 0
 
   For each non-skipped factor:
-    weighted_sum += user_star_rating × country_factor_score
+    weighted_sum += user_star_rating × scores[factor]
     total_weight += user_star_rating
 
-  climate_score = average of country scores for all selected climate types
-  weighted_sum += 3 × climate_score
-  total_weight += 3
+  If any climates selected:
+    climate_score = average of country scores for selected climate types
+    weighted_sum += climate_importance_stars × climate_score
+    total_weight += climate_importance_stars
 
   final_score = weighted_sum / total_weight  (out of 10)
+
+  fails = [each MUST factor where scores[factor] < 5]
 ```
 
-Countries are then sorted by final score descending. Top 3 get medal indicators.
+Countries with no failed MUSTs are ranked by final score descending (top 3 get medals). Countries failing any MUST sort below all passing countries, greyed out, with their failures listed.
 
 ## Data Sources
 
@@ -128,7 +153,9 @@ All country scores are based on data from:
 - IRS, HMRC, Revenue.ie (double taxation treaty lists)
 - Latin Mass Directory, Una Voce (TLM availability)
 
-Data last updated: **February 2026**
+Data compiled: **February 2026** · Targeted corrections (vaccine mandates and homeschool regulations for Italy, Portugal, Germany, Poland, Czechia, Bulgaria, Greece, Switzerland, Malta; USA residency perspective; UK added incl. Children's Wellbeing and Schools Act 2026): **July 2026**
+
+⚠️ **De-jure legality can be undone by de-facto administrative rules.** A country where homeschooling is "legal" and vaccines are "not mandatory" may still require school registration that enforces the vaccine schedule. The warning banners cover known cases, but always verify the interaction of rules — not just each rule in isolation — before committing.
 
 ## Tech Stack
 
@@ -152,9 +179,12 @@ In the `C` array, add an object following this pattern:
   r: "Region",           // one of: EU, Europe, Americas, Asia, Middle East, Eurasia
   s: [7,5,7,7,6,5,9,7,8,2,7,9,8,8,9,5,5],  // 17 scores (1-10) matching F array order
   cl: {med:10,four:4,trop:3,cool:5,alp:3,dry:5},  // climate profile scores
+  w: "Optional interaction warning shown as an amber banner.",  // omit if none
   nt: "Notes about this country."  // displayed when expanded
 }
 ```
+
+Score residency (index 13) from the perspective of a foreigner with none of the supported citizenships; citizenship-based overrides live in the `CIT` object.
 
 Also add a DTA entry in the `DT` object:
 

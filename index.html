@@ -34,6 +34,10 @@ h2{font-family:var(--hf);color:var(--gold);font-size:22px;margin-bottom:4px}
 .warn{background:rgba(212,168,67,0.12);border-left:3px solid var(--am);color:#e6d5a5;font-size:11.5px;line-height:1.5;padding:8px 10px;border-radius:6px;margin:10px 0 4px}
 .cc.fail{opacity:0.6;border-color:var(--rb)}
 .fail-txt{color:var(--r);font-size:10px;font-weight:600;margin-top:2px}
+.budget{position:sticky;top:0;z-index:50;background:var(--card);border:1px solid var(--gold);border-radius:8px;padding:8px 12px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--gold);transition:border-color 0.2s,color 0.2s}
+.budget.flash{border-color:var(--r);color:var(--r);animation:shake 0.3s}
+.budget.over{border-color:var(--r);color:var(--r)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
 .skipped .fname,.skipped .fdesc{opacity:0.35;text-decoration:line-through}
 .bar{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--bd);padding:10px 14px;display:flex;gap:8px;justify-content:center;z-index:100;padding-bottom:max(10px,env(safe-area-inset-bottom))}
 .btn{background:linear-gradient(135deg,var(--gold),#a8863a);color:var(--bg);border:none;padding:12px 36px;border-radius:8px;font-family:var(--hf);font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 4px 20px rgba(201,169,110,0.3)}
@@ -141,7 +145,13 @@ const F=[
 {id:"tlm",n:"Traditional Latin Mass",d:"FSSP, ICKSP, diocesan TLM"},
 ];
 const CL=[{id:"med",n:"Mediterranean",ico:"☀️"},{id:"four",n:"Four Seasons",ico:"🍂"},{id:"trop",n:"Tropical",ico:"🌴"},{id:"cool",n:"Cool & Green",ico:"🌧️"},{id:"alp",n:"Alpine",ico:"🏔️"},{id:"dry",n:"Dry & Arid",ico:"🏜️"}];
-const SC=[{id:"single",n:"Single",ico:"🧑",b:{costOfLiving:1,language:1,taxation:1,travelAccess:1}},{id:"couple",n:"Couple",ico:"👫",b:{safety:1,propertyRights:1,taxation:1,residency:1}},{id:"family",n:"Family w/ Kids",ico:"👨‍👩‍👧‍👦",b:{safety:2,homeschool:2,catholic:1,vaccineChoice:1,waterQuality:1,food:1}}];
+const BUDGET=F.length*3; // 51-star budget forces real prioritization
+// Scenario presets are full budget-exact distributions (each sums to 51)
+const SC=[
+{id:"single",n:"Single",ico:"🧑",p:{catholic:3,homeschool:1,vaccineChoice:2,outdoors:4,costOfLiving:5,taxation:4,safety:3,language:4,infrastructure:3,gunRights:2,waterQuality:3,travelAccess:5,food:3,residency:4,propertyRights:2,politicalTrend:2,tlm:1}},
+{id:"couple",n:"Couple",ico:"👫",p:{catholic:3,homeschool:2,vaccineChoice:3,outdoors:4,costOfLiving:4,taxation:4,safety:4,language:3,infrastructure:3,gunRights:2,waterQuality:3,travelAccess:3,food:3,residency:4,propertyRights:4,politicalTrend:1,tlm:1}},
+{id:"family",n:"Family w/ Kids",ico:"👨‍👩‍👧‍👦",p:{catholic:4,homeschool:5,vaccineChoice:4,outdoors:3,costOfLiving:3,taxation:2,safety:5,language:2,infrastructure:3,gunRights:1,waterQuality:4,travelAccess:2,food:4,residency:3,propertyRights:3,politicalTrend:2,tlm:1}}
+];
 const HC=["USA","UK","Ireland","Canada","Australia","South Africa","Germany"];
 const DT={portugal:[1,1,1,1,1,1,1],spain:[1,1,1,1,1,1,1],france:[1,1,1,1,1,1,1],italy:[1,1,1,1,1,1,1],germany:[1,1,1,1,1,1,0],austria:[1,1,1,1,1,1,1],poland:[1,1,1,1,1,1,1],ireland:[1,1,0,1,1,1,1],malta:[1,1,1,1,1,1,1],hungary:[1,1,1,1,1,1,1],croatia:[1,1,1,1,1,1,1],czechia:[1,1,1,1,1,1,1],belgium:[1,1,1,1,1,1,1],netherlands:[1,1,1,1,1,1,1],luxembourg:[1,1,1,1,1,1,1],denmark:[1,1,1,1,1,1,1],sweden:[1,1,1,1,1,1,1],finland:[1,1,1,1,1,1,1],estonia:[1,1,1,1,1,0,1],latvia:[1,1,1,1,1,0,1],lithuania:[1,1,1,1,1,0,1],romania:[1,1,1,1,1,1,1],bulgaria:[1,1,1,1,1,1,1],greece:[1,1,1,1,1,1,1],cyprus:[1,1,1,1,1,1,1],slovakia:[1,1,1,1,1,1,1],slovenia:[1,1,1,1,1,0,1],andorra:[0,1,0,0,0,0,0],switzerland:[1,1,1,1,1,1,1],montenegro:[0,1,0,0,0,0,1],uk:[1,0,1,1,1,1,1],georgia:[1,1,1,1,0,0,1],turkey:[1,1,1,1,1,1,1],russia:[1,1,1,1,1,1,1],philippines:[1,1,0,1,1,0,1],thailand:[1,1,1,1,1,1,1],southkorea:[1,1,1,1,1,1,1],usa:[0,1,1,1,1,1,1],mexico:[1,1,1,1,1,1,1],argentina:[1,1,0,1,1,0,1],chile:[1,1,1,1,1,1,1],uruguay:[1,1,0,1,1,0,1],paraguay:[0,0,0,0,0,0,0],costarica:[0,1,0,1,0,0,1],ecuador:[1,1,0,1,0,0,1],panama:[0,1,0,1,0,0,0],colombia:[1,1,0,1,0,1,1],brazil:[1,1,0,1,0,1,1],peru:[1,1,0,1,0,0,1],guatemala:[0,0,0,0,0,0,0],domrep:[0,1,0,1,0,0,0],belize:[0,1,0,1,0,0,0],uae:[0,1,0,0,0,0,1],qatar:[0,1,0,0,0,0,1]};
 
@@ -339,7 +349,14 @@ const[infoOpen,setInfoOpen]=useState(null);
 useEffect(()=>{try{localStorage.setItem(LS,JSON.stringify({wt,skip,db,cp:[...cpSet],cwt,scn,hi}))}catch(e){}},[wt,skip,db,cpSet,cwt,scn,hi]);
 
 const toggleClimate=(id)=>{setCpSet(prev=>{const n=new Set(prev);if(n.has(id))n.delete(id);else n.add(id);return n})};
-const applySc=(sid)=>{const s=SC.find(x=>x.id===sid);if(!s)return;setScn(sid);const nw={};F.forEach(f=>{nw[f.id]=3});Object.entries(s.b).forEach(([k,v])=>{if(nw[k]!==undefined)nw[k]=Math.min(5,nw[k]+v)});setWt(nw);setSkip(prev=>{const ns={...prev};F.forEach(f=>{ns[f.id]=false});return ns})};
+const applySc=(sid)=>{const s=SC.find(x=>x.id===sid);if(!s)return;setScn(sid);setWt({...s.p});setSkip(()=>{const ns={};F.forEach(f=>{ns[f.id]=false});return ns})};
+
+// Star budget: only non-skipped factors spend stars
+const used=useMemo(()=>F.reduce((a,f)=>a+(skip[f.id]?0:(wt[f.id]||0)),0),[wt,skip]);
+const[flash,setFlash]=useState(false);
+const deny=()=>{setFlash(true);setTimeout(()=>setFlash(false),600)};
+const setStar=(fid,s)=>{if(skip[fid])return;const delta=s-(wt[fid]||0);if(delta>0&&used+delta>BUDGET){deny();return}setWt(p=>({...p,[fid]:s}))};
+const unskip=(fid)=>{const rem=BUDGET-used;if(rem<1){deny();return false}const w=Math.min(wt[fid]||3,rem);setSkip(p=>({...p,[fid]:false}));if(w!==wt[fid])setWt(p=>({...p,[fid]:w}));return true};
 
 const czOv=CIT[HC[hi]]||{};
 const effS=(c)=>{const o=czOv[c.id];if(o!==undefined&&o>c.s[13]){const s2=c.s.slice();s2[13]=o;return s2}return c.s};
@@ -384,7 +401,7 @@ if(step==="setup")return(
 <h2>Setup</h2><p className="sub" style={{marginBottom:20}}>Configure your situation before rating priorities.</p>
 <div className="sect"><div className="sect-title">👤 Your Situation</div>
 <div className="sc-btns">{SC.map(s=><button key={s.id} className={`sc-btn ${scn===s.id?"on":""}`} onClick={()=>applySc(s.id)}><div className="ico">{s.ico}</div><div className="lbl">{s.n}</div></button>)}</div>
-<p style={{color:"var(--td)",fontSize:11,marginTop:6}}>Pre-adjusts weights. Fine-tune next.</p></div>
+<p style={{color:"var(--td)",fontSize:11,marginTop:6}}>Sets a balanced {BUDGET}-star distribution. Fine-tune next.</p></div>
 <div className="sect"><div className="sect-title">🌤️ Preferred Climate</div>
 <div className="climate-opt">{CL.map(c=><button key={c.id} className={`cl-btn ${cpSet.has(c.id)?"on":""}`} onClick={()=>toggleClimate(c.id)}><span className="ck">✓</span><div className="ico">{c.ico}</div><div className="lbl">{c.n}</div></button>)}</div>
 <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,marginTop:10}}>
@@ -401,8 +418,12 @@ if(step==="setup")return(
 if(step==="weight")return(
 <div className="page pb">
 <div className="step-dots">{[1,2,3].map(i=><div key={i} className={`dot ${i===2?"on":""}`}/>)}</div>
-<h2>Rate Your Priorities</h2><p className="sub" style={{marginBottom:16}}>1★ = nice to have · 5★ = top priority · MUST = dealbreaker: under 5/10 fails, 5–6/10 marked borderline · SKIP = exclude from scoring</p>
-{F.map(f=><div key={f.id} className={`card row ${skip[f.id]?"skipped":""}`}><div className="flex1"><div className="fname">{f.n}{db[f.id]&&!skip[f.id]?" 🚫":""}</div><div className="fdesc">{f.d}</div></div><div className="stars">{[1,2,3,4,5].map(s=><button key={s} className={`star ${!skip[f.id]&&s<=wt[f.id]?"on":""} ${skip[f.id]?"off":""}`} onClick={()=>{if(!skip[f.id])setWt(p=>({...p,[f.id]:s}))}}>★</button>)}</div><div style={{display:"flex",flexDirection:"column",gap:3}}><button className={`skip-btn ${skip[f.id]?"on":""}`} onClick={()=>{setSkip(p=>({...p,[f.id]:!p[f.id]}));setDb(p=>({...p,[f.id]:false}))}}>{skip[f.id]?"SKIPPED":"SKIP"}</button><button className={`must-btn ${db[f.id]?"on":""}`} onClick={()=>{setDb(p=>({...p,[f.id]:!p[f.id]}));setSkip(p=>({...p,[f.id]:false}))}}>{db[f.id]?"MUST ✓":"MUST"}</button></div></div>)}
+<h2>Rate Your Priorities</h2><p className="sub" style={{marginBottom:10}}>Spend your {BUDGET}-star budget where it truly matters — raising one factor means lowering another. MUST = dealbreaker: under 5/10 fails, 5–6/10 marked borderline · SKIP = exclude (refunds its stars)</p>
+<div className={`budget ${flash?"flash":""} ${used>BUDGET?"over":""}`}>
+<span>★ <strong>{used}</strong> / {BUDGET} spent{used>BUDGET?` — over budget, remove ${used-BUDGET}`:` · ${BUDGET-used} left`}</span>
+<button className="btn-s" onClick={()=>{const w={};F.forEach(f=>{w[f.id]=3});setWt(w)}}>Reset all to 3★</button>
+</div>
+{F.map(f=><div key={f.id} className={`card row ${skip[f.id]?"skipped":""}`}><div className="flex1"><div className="fname">{f.n}{db[f.id]&&!skip[f.id]?" 🚫":""}</div><div className="fdesc">{f.d}</div></div><div className="stars">{[1,2,3,4,5].map(s=><button key={s} className={`star ${!skip[f.id]&&s<=wt[f.id]?"on":""} ${skip[f.id]?"off":""}`} onClick={()=>setStar(f.id,s)}>★</button>)}</div><div style={{display:"flex",flexDirection:"column",gap:3}}><button className={`skip-btn ${skip[f.id]?"on":""}`} onClick={()=>{if(skip[f.id]){unskip(f.id)}else{setSkip(p=>({...p,[f.id]:true}));setDb(p=>({...p,[f.id]:false}))}}}>{skip[f.id]?"SKIPPED":"SKIP"}</button><button className={`must-btn ${db[f.id]?"on":""}`} onClick={()=>{if(db[f.id]){setDb(p=>({...p,[f.id]:false}))}else{if(skip[f.id]&&!unskip(f.id))return;setDb(p=>({...p,[f.id]:true}))}}}>{db[f.id]?"MUST ✓":"MUST"}</button></div></div>)}
 <div className="bar"><button className="btn-o" onClick={()=>setStep("setup")}>Back</button><button className="btn" onClick={()=>setStep("results")}>See Results →</button></div>
 </div>);
 

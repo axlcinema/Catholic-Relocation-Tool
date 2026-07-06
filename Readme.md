@@ -9,7 +9,7 @@ A weighted, interactive decision tool for freedom-loving Catholic families (or i
 
 ## What It Does
 
-You rate what matters to you on a 1-5 star scale (or skip factors entirely, or mark them as MUST-have dealbreakers), pick your preferred climate(s), select your family situation and citizenship, and the tool ranks 54 countries against your personal priorities using a weighted scoring algorithm.
+You rate what matters to you on a 1-5 star scale within a fixed 51-star budget (or skip factors entirely, or mark them as MUST-have dealbreakers), pick your preferred climate(s), select your family situation and citizenship, and the tool ranks 54 countries against your personal priorities using a weighted scoring algorithm.
 
 Every family has different non-negotiables. This tool respects that instead of giving you a generic "top 10 countries" listicle — and countries that fail a non-negotiable are flagged as failing rather than quietly compensated by strong scores elsewhere.
 
@@ -29,6 +29,14 @@ Every family has different non-negotiables. This tool respects that instead of g
 Each country is scored 1-10 on:
 
 Catholic Community & Mass, Homeschooling Freedom, Parental Vaccine Choice, Mountains & Nature, Cost of Living, Low Taxation, Safety & Low Crime, English Accessibility, Infrastructure Quality, Gun Ownership Rights, Water Quality, Travel Accessibility, Food Quality, Residency Pathway, Property Ownership, Political Trajectory, Traditional Latin Mass Access
+
+### ⭐ Star Budget
+
+You get **51 stars** (17 factors × 3) to distribute. Raising one factor above 3★ means lowering another below it — you can't rate everything 5★. A sticky budget bar shows stars spent/remaining and shakes red when you try to overspend; skipping a factor refunds its stars to the pool. This forces the question the tool exists to answer: *what actually matters most to you?*
+
+(Math note: in a weighted average, uniform ratings cancel out — all-5s produces identical rankings to all-3s. The budget doesn't change the algorithm; it forces your input to contain real information.)
+
+The Single / Couple / Family presets are budget-exact 51-star distributions you can fine-tune.
 
 ### 🚫 MUST (Dealbreaker) Mode
 
